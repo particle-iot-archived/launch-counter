@@ -3,11 +3,12 @@ var router = express.Router();
 var database = require('../lib/mongo.js');
 
 
+
 /* Get data about the orders. */
 router.get('/', function(req, res) {
   getCount("photons", function(photonCount) {
     getCount("orders", function(orderCount) {
-      res.send({photons: photonCount, order: orderCount});
+      res.send({photons: photonCount, orders: orderCount});
     });
   })
 });
@@ -18,7 +19,8 @@ router.post('/', function(req, res) {
 
   incrCount("photons", req.body.photons, function(photons) {
     incrCount("orders", 1, function(orders) {
-      res.send({photons: photons.count, order: orders.count});
+      res.send({photons: photons.count, orders: orders.count});
+      req.io.broadcast('countUpdated', {photons: photons.count, orders: orders.count});
     });
   });
 });

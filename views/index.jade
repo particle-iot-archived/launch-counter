@@ -1,5 +1,22 @@
 extends layout
 
+
 block content
-  h1 #{orders} orders
-  h1 #{photons} photons
+  script(src="/socket.io/socket.io.js")
+  script(type='text/javascript').
+    io = io.connect();
+    io.emit('ready');
+    io.on('currentCount', function(data) {
+      $('#orders').text(data.orders);
+      $('#photons').text(data.photons);
+    })
+    io.on('countUpdated', function(data) {
+      $('#orders').text(data.orders);
+      $('#photons').text(data.photons);
+    });
+  h1
+    span#orders
+    |&nbsp;orders
+  h1
+    span#photons
+    |&nbsp;photons

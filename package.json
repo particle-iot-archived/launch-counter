@@ -16,5 +16,8 @@
     "socket.io": "~1.2.0",
     "when": "~3.5.1",
     "mongodb": "~1.4.19"
+  },
+  "devDependencies": {
+    "express.io": "~1.1.13"
   }
 }

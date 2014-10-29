@@ -1,14 +1,16 @@
-var express = require('express');
+var express = require('express.io');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var database = require('./lib/mongo.js');
 
 var routes = require('./routes/index');
 var orders = require('./routes/orders');
 
-var app = express();
+app =  require('express.io')();
+app.http().io();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,4 +59,34 @@ app.use(function(err, req, res, next) {
 });
 
 
+var debug = require('debug')('launch-counter');
+
+app.set('port', process.env.PORT || 3000);
+
+var server = app.listen(app.get('port'), function() {
+    debug('Express server listening on port ' + server.address().port);
+});
+
+//Socket IO events for on connect
+app.io.route('ready', function(req) {
+  getCount("photons", function(photonCount) {
+    getCount("orders", function(orderCount) {
+      req.io.emit('currentCount', {
+        photons: photonCount,
+        orders: orderCount
+      });
+    });
+  });
+});
+
+function getCount(record, callback) {
+ database.query("counts", { name: record }, function(err, arr) {
+  var hasData = (arr && (arr.length > 0));
+  var count = (hasData && arr[0].count) ? arr[0].count : 0;
+  if (callback) { callback(count); }
+ });
+}
+
+
+app.listen(7076)
 module.exports = app;
