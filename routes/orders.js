@@ -6,7 +6,7 @@ var photons = 0;
 
 /* Get data about the orders. */
 router.get('/', function(req, res) {
-  res.send('You want some orders? Fine. Here they are.');
+  res.send({orders: orders, photons: photons});
 });
 
 router.post('/', function(req, res) {
