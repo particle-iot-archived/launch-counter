@@ -20,7 +20,7 @@ For use on the store and on the Spark Website, creating a web socket to get stre
 ```
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
   <script type="text/javascript">
-    io = io.connect(http://launch-counter.herokuapp.com:7076);
+    io = io.connect('http://launch-counter.herokuapp.com:7076');
     io.emit('ready');
      io.on('currentCount', function(data) {
       // DO STUFF
