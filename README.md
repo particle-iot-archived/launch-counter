@@ -18,7 +18,7 @@ Sample response:
 For use on the store and on the Spark Website, creating a web socket to get streaming data of the current photons and orders as they are being made. Launch Counter uses socket.io to power the Web Sockets. To set up the socket on your app:
 
 ```
-  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="http://launch-counter.herokuapp.com/socket.io/socket.io.js"></script>
   <script type="text/javascript">
     io = io.connect('http://launch-counter.herokuapp.com:7076');
     io.emit('ready');
