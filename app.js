@@ -95,5 +95,4 @@ function getCount(record, callback) {
 }
 
 
-app.listen(7076)
 module.exports = app;
