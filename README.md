@@ -38,6 +38,8 @@ For use on the store and on the Spark Website, creating a web socket to get stre
 
 `countUpdated` will be sent when there are new orders posted to the store. This will provide the streaming effect, with the values being updated each and every time new orders are placed.
 
+**NOTE: You must use the socket.io.js from the launch-counter app or else it will not work!
+
 
 ### POSTing Data
 When a new order is created, you need to send a POST request to the Launch Counter app to update the number of orders and photons in our database.
