@@ -60,7 +60,7 @@ app.use(function(err, req, res, next) {
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
   return next();
 });
@@ -69,6 +69,8 @@ app.use(function(req, res, next) {
 var debug = require('debug')('launch-counter');
 
 app.set('port', process.env.PORT || 3000);
+
+console.log(process.env.PORT);
 
 var server = app.listen(app.get('port'), function() {
     debug('Express server listening on port ' + server.address().port);
