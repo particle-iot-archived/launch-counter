@@ -78,6 +78,8 @@ var server = app.listen(app.get('port'), function() {
 app.io.route('ready', function(req) {
   getCount("photons", function(photonCount) {
     getCount("orders", function(orderCount) {
+      console.log("photonCount", photonCount);
+      console.log("orderCount", orderCount);
       req.io.emit('currentCount', {
         photons: photonCount,
         orders: orderCount
