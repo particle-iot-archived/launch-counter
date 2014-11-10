@@ -60,7 +60,7 @@ app.use(function(err, req, res, next) {
 
 
 var set_cors_headers = function (req, res, next) {
-   if ('OPTIONS' === req.method) {
+   if ('GET' === req.method) {
        res.set({
            'Access-Control-Allow-Origin': '*',
            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
