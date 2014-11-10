@@ -7,6 +7,7 @@ var database = require('../lib/mongo.js');
 router.get('/', function(req, res) {
   getCount("photons", function(photonCount) {
     getCount("orders", function(orderCount) {
+      res.set({'Access-Control-Allow-Origin': '*'});
       res.send({photons: photonCount, orders: orderCount});
     });
   })
