@@ -52,7 +52,7 @@ router.get('/', function(req, res) {
 //curl -H "Content-Type: application/json" -d '{"type": "track", "event": "Placed Order", "properties": {"photonCount": 3}}' http://localhost:5000/orders
 router.post('/', function(req, res) {
   if (!req.body) return res.status(400).send('No body specified');
-  if (req.body.type === 'track' && req.body.event === 'Placed Order') {
+  if (req.body.type === 'track' && req.body.event === 'Completed Order') {
     try {
       var photonCount = req.body.properties.photonCount;
     } catch(err) {
