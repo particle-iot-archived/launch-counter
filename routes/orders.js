@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var database = require('../lib/mongo.js');
+var spark = require('spark');
 
 
 /* Get data about the orders. */
@@ -49,7 +50,7 @@ router.get('/', function(req, res) {
 // }
 
 // hit it with this
-//curl -H "Content-Type: application/json" -d '{"type": "track", "event": "Placed Order", "properties": {"photonCount": 3}}' http://localhost:5000/orders
+//curl -H "Content-Type: application/json" -d '{"type": "track", "event": "Completed Order", "properties": {"photonCount": 3}}' http://localhost:5000/orders
 router.post('/', function(req, res) {
   if (!req.body) return res.status(400).send('No body specified');
   if (req.body.type === 'track' && req.body.event === 'Completed Order') {
@@ -62,6 +63,30 @@ router.post('/', function(req, res) {
       incrCount("orders", 1, function(orders) {
         res.send({photons: photons.count, orders: orders.count});
         req.io.broadcast('countUpdated', {photons: photons.count, orders: orders.count});
+        // FIRE THE SPARK EVENT FOR THE COOL NUMBER THINGY
+        var event = spark.publishEvent('numPhotonsSold', photons.count);
+        event.then(
+          function(data) {
+            // EVENT PUBLISHED YAY!
+            if (data.ok) { console.log("Event published succesfully") }
+          },
+          function(err) {
+            // EVENT DIDNT WORK!
+            console.log("Failed to publish event: " + err)
+            // TRY TO LOGIN AGAIN AS THE ACCESS TOKEN MAY HAVE EXPIRED
+            spark.on('login', function() {
+              var retryEvent = spark.publishEvent('numPhotonsSold', photons.count);
+              retryEvent.then( function(data) {
+                  if (data.ok) { console.log("Event published succesfully") }
+                },
+                function(error) {
+                  console.log("Permanent error: " + err);
+                }
+              );
+            });
+            spark.login({username: 'photonsoldcounter@spark.io', password: 'countphotons'});
+          }
+        );
       });
     });
   } else {

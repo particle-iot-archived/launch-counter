@@ -8,6 +8,7 @@ var database = require('./lib/mongo.js');
 
 var routes = require('./routes/index');
 var orders = require('./routes/orders');
+var spark = require('spark');
 
 app =  require('express.io')();
 app.http().io();
@@ -83,10 +84,13 @@ app.set('port', process.env.PORT || 3000);
 
 console.log(process.env.PORT);
 
-var server = app.listen(app.get('port'), function() {
-    debug('Express server listening on port ' + server.address().port);
+spark.on('login', function() {
+  var server = app.listen(app.get('port'), function() {
+      debug('Express server listening on port ' + server.address().port);
+  });
 });
 
+spark.login({username: 'photonsoldcounter@spark.io', password: 'countphotons'});
 //Socket IO events for on connect
 app.io.route('ready', function(req) {
   getCount("photons", function(photonCount) {
